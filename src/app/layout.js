@@ -4,11 +4,14 @@
 import { SessionProvider } from 'next-auth/react';
 import { ThemeProvider, CssBaseline } from '@mui/material';
 import { useState } from 'react';
-import { lightTheme, darkTheme } from '../theme';
-import Navbar from '../components/Navbar'; // Import the Navbar component
+import { usePathname } from 'next/navigation';
+import { lightTheme, darkTheme } from '../theme/theme';
+import Navbar from '../components/Navbar';
+import ThemeToggleButton from '../components/ThemeToggleButton';
 
 export default function RootLayout({ children }) {
   const [isDarkMode, setIsDarkMode] = useState(false);
+  const pathname = usePathname();
 
   const toggleTheme = () => setIsDarkMode((prev) => !prev);
 
@@ -18,11 +21,16 @@ export default function RootLayout({ children }) {
         <SessionProvider>
           <ThemeProvider theme={isDarkMode ? darkTheme : lightTheme}>
             <CssBaseline />
-            <Navbar /> {/* Add the Navbar component here */}
-            <button onClick={toggleTheme} style={{ margin: '1rem' }}>
-              {isDarkMode ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
-            </button>
+            
+            {/* Conditionally show the Navbar */}
+            {pathname !== '/login' && <Navbar />}
+            
             {children}
+
+            {/* Theme toggle button positioned at the bottom-left */}
+            <div style={{ position: 'fixed', bottom: '1rem', left: '1rem', zIndex: 1000 }}>
+              <ThemeToggleButton toggleTheme={toggleTheme} isDarkMode={isDarkMode} />
+            </div>
           </ThemeProvider>
         </SessionProvider>
       </body>

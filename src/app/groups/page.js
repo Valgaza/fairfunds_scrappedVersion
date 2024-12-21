@@ -4,104 +4,108 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { useSession, signOut } from 'next-auth/react';
 import ProtectedRoute from '../../components/ProtectedRoute';
+import { Box, Button, Typography } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
 
 export default function GroupsPage() {
   const { data: session } = useSession();
   const [activePage, setActivePage] = useState('primary');
+  const theme = useTheme(); // Access the current theme
 
   return (
     <ProtectedRoute>
-      <div style={{ display: 'flex', height: '100vh' }}>
+      <Box sx={{ display: 'flex', height: '100vh' }}>
         {/* Sidebar Navigation */}
-        <nav style={{ width: '200px', backgroundColor: '#f0f0f0', padding: '1rem' }}>
-          <h2>Groups</h2>
-          <ul style={{ listStyle: 'none', padding: 0 }}>
-            <li>
-              <button onClick={() => setActivePage('primary')} style={{ margin: '0.5rem 0' }}>
-                Primary Page
-              </button>
-            </li>
-            <li>
-              <button onClick={() => setActivePage('secondary')} style={{ margin: '0.5rem 0' }}>
-                Secondary Page
-              </button>
-            </li>
-            <li>
-              <button onClick={() => setActivePage('tertiary')} style={{ margin: '0.5rem 0' }}>
-                Tertiary Page
-              </button>
-            </li>
-          </ul>
-
-          <button onClick={() => signOut()} style={{ marginTop: '1rem' }}>Sign Out</button>
-        </nav>
+        <Box
+          sx={{
+            width: '200px',
+            backgroundColor: theme.palette.background.paper,
+            color: theme.palette.text.primary,
+            padding: '1rem',
+            boxShadow: 1,
+          }}
+        >
+          <Button
+            fullWidth
+            variant="contained"
+            color="primary"
+            onClick={() => setActivePage('primary')}
+            sx={{ marginBottom: '0.5rem' }}
+          >
+            Primary Page
+          </Button>
+          <Button
+            fullWidth
+            variant="contained"
+            color="primary"
+            onClick={() => setActivePage('secondary')}
+            sx={{ marginBottom: '0.5rem' }}
+          >
+            Secondary Page
+          </Button>
+          <Button
+            fullWidth
+            variant="contained"
+            color="primary"
+            onClick={() => setActivePage('tertiary')}
+            sx={{ marginBottom: '0.5rem' }}
+          >
+            Tertiary Page
+          </Button>
+        </Box>
 
         {/* Main Content Area */}
-        <div style={{ flex: 1, padding: '2rem' }}>
-          <header style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '2rem' }}>
-            <h1>Group Expenses</h1>
-            <Link href="/your-space" style={{ textDecoration: 'none', color: 'blue' }}>Your Space</Link>
-          </header>
+        <Box sx={{ flex: 1, padding: '2rem', backgroundColor: theme.palette.background.default }}>
+          <Box
+            component="header"
+            sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}
+          >
+            <Typography variant="h4">Group Expenses</Typography>
+            <Link href="/your-space" style={{ textDecoration: 'none', color: theme.palette.primary.main }}>
+            </Link>
+          </Box>
 
           {/* Primary Page - Placeholder Form */}
           {activePage === 'primary' && (
-            <div>
-              <h2>Individual Balances</h2>
-              <form style={{ marginBottom: '2rem' }}>
-                <input
-                  type="text"
-                  placeholder="Payer's Name"
-                  style={{ padding: '0.5rem', marginRight: '1rem' }}
-                />
-                <input
-                  type="number"
-                  placeholder="Amount"
-                  style={{ padding: '0.5rem', marginRight: '1rem' }}
-                />
-                <input
-                  type="text"
-                  placeholder="Participants (comma-separated)"
-                  style={{ padding: '0.5rem', marginRight: '1rem' }}
-                />
-                <button type="button" style={{ padding: '0.5rem 1rem' }}>Add Expense</button>
+            <Box>
+              <Typography variant="h5" sx={{ marginBottom: '1rem' }}>
+                Individual Balances
+              </Typography>
+              <form>
+                <input type="text" placeholder="Payer's Name" style={{ padding: '0.5rem', marginRight: '1rem' }} />
+                <input type="number" placeholder="Amount" style={{ padding: '0.5rem', marginRight: '1rem' }} />
+                <input type="text" placeholder="Participants (comma-separated)" style={{ padding: '0.5rem', marginRight: '1rem' }} />
+                <Button variant="contained" color="primary">Add Expense</Button>
               </form>
-            </div>
+            </Box>
           )}
 
           {/* Secondary Page - Placeholder Form */}
           {activePage === 'secondary' && (
-            <div>
-              <h2>Group Balances</h2>
-              <form style={{ marginBottom: '2rem' }}>
-                <input
-                  type="text"
-                  placeholder="Group Name"
-                  style={{ padding: '0.5rem', marginRight: '1rem' }}
-                />
-                <input
-                  type="number"
-                  placeholder="Amount"
-                  style={{ padding: '0.5rem', marginRight: '1rem' }}
-                />
-                <input
-                  type="text"
-                  placeholder="Participants (comma-separated)"
-                  style={{ padding: '0.5rem', marginRight: '1rem' }}
-                />
-                <button type="button" style={{ padding: '0.5rem 1rem' }}>Add Group Expense</button>
+            <Box>
+              <Typography variant="h5" sx={{ marginBottom: '1rem' }}>
+                Group Balances
+              </Typography>
+              <form>
+                <input type="text" placeholder="Group Name" style={{ padding: '0.5rem', marginRight: '1rem' }} />
+                <input type="number" placeholder="Amount" style={{ padding: '0.5rem', marginRight: '1rem' }} />
+                <input type="text" placeholder="Participants (comma-separated)" style={{ padding: '0.5rem', marginRight: '1rem' }} />
+                <Button variant="contained" color="primary">Add Group Expense</Button>
               </form>
-            </div>
+            </Box>
           )}
 
           {/* Tertiary Page - Placeholder */}
           {activePage === 'tertiary' && (
-            <div>
-              <h2>Activity Log</h2>
-              <p>Activity log will display here.</p>
-            </div>
+            <Box>
+              <Typography variant="h5" sx={{ marginBottom: '1rem' }}>
+                Activity Log
+              </Typography>
+              <Typography>No activities logged yet.</Typography>
+            </Box>
           )}
-        </div>
-      </div>
+        </Box>
+      </Box>
     </ProtectedRoute>
   );
 }
